@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DIVINE KNOWLEDGE INDEX</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 25px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.search-box input {
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    width: 260px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 15px;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px cyan;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.details {
+    display: none;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.card.active .details {
+    display: block;
+}
+
+button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 8px;
+    background: cyan;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>DIVINE KNOWLEDGE INDEX</header>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search animal...">
+</div>
+
+<div class="container" id="animalContainer"></div>
+
+<script>
+const animals = [
+{
+    name: "Tiger",
+    species: "Panthera tigris",
+    anatomy: "Powerful muscles, retractable claws.",
+    habits: "Solitary hunter.",
+    explanation: "Ambush predator.",
+    fact: "Unique stripes.",
+    image: "https://source.unsplash.com/400x300/?tiger",
+    sound: "https://www.soundjay.com/animal/tiger-roar.mp3"
+},
+{
+    name: "Eagle",
+    species: "Aquila chrysaetos",
+    anatomy: "Sharp talons, big wings.",
+    habits: "Sky hunter.",
+    explanation: "Spots prey from far.",
+    fact: "Super sharp vision.",
+    image: "https://source.unsplash.com/400x300/?eagle",
+    sound: "https://www.soundjay.com/animal/eagle-screech.mp3"
+},
+{
+    name: "Dolphin",
+    species: "Delphinus delphis",
+    anatomy: "Streamlined body.",
+    habits: "Lives in pods.",
+    explanation: "Uses echolocation.",
+    fact: "Very intelligent.",
+    image: "https://source.unsplash.com/400x300/?dolphin",
+    sound: "https://www.soundjay.com/animal/dolphin.mp3"
+},
+{
+    name: "Owl",
+    species: "Strigiformes",
+    anatomy: "Silent wings.",
+    habits: "Nocturnal.",
+    explanation: "Hunts at night.",
+    fact: "Can rotate neck.",
+    image: "https://source.unsplash.com/400x300/?owl",
+    sound: "https://www.soundjay.com/animal/owl-hoot.mp3"
+},
+{
+    name: "Octopus",
+    species: "Octopoda",
+    anatomy: "8 arms, soft body.",
+    habits: "Solitary.",
+    explanation: "Escapes using ink.",
+    fact: "3 hearts.",
+    image: "https://source.unsplash.com/400x300/?octopus",
+    sound: "https://www.soundjay.com/animal/water-splash.mp3"
+}
+];
+
+const container = document.getElementById("animalContainer");
+const searchInput = document.getElementById("search");
+
+function displayAnimals(filter="") {
+    container.innerHTML = "";
+
+    animals
+    .filter(a => a.name.toLowerCase().includes(filter.toLowerCase()))
+    .forEach(animal => {
+
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        const audio = new Audio(animal.sound);
+
+        card.innerHTML = `
+            <img src="${animal.image}">
+            <h2>${animal.name}</h2>
+            <button>Play Sound 🔊</button>
+            <div class="details">
+                <p><b>Species:</b> ${animal.species}</p>
+                <p><b>Anatomy:</b> ${animal.anatomy}</p>
+                <p><b>Habits:</b> ${animal.habits}</p>
+                <p><b>Explanation:</b> ${animal.explanation}</p>
+                <p><b>Fact:</b> ${animal.fact}</p>
+            </div>
+        `;
+
+        // toggle detail
+        card.addEventListener("click", (e) => {
+            if(e.target.tagName !== "BUTTON"){
+                card.classList.toggle("active");
+            }
+        });
+
+        // sound button
+        card.querySelector("button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            audio.currentTime = 0;
+            audio.play();
+        });
+
+        container.appendChild(card);
+    });
+}
+
+// search
+searchInput.addEventListener("input", (e) => {
+    displayAnimals(e.target.value);
+});
+
+// initial load
+displayAnimals();
+</script>
+
+</body>
+</html>
